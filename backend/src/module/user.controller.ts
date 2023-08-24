@@ -1,4 +1,4 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Get, Body, Param } from '@nestjs/common';
 import { UserService } from './user.service';
 
 @Controller('users')
@@ -6,7 +6,7 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post()
-  addUser(
+  async addUser(
     @Body('username') username: string,
     @Body('password') password: string,
     @Body('email') email: string,
@@ -15,12 +15,26 @@ export class UserController {
     if (!username || !password || !email || !fullname)
       return 'All fields are required';
 
-    const result = this.userService.addNewUser(
+    const result = await this.userService.addNewUser(
       username,
       password,
       email,
       fullname,
     );
+
+    return result;
+  }
+
+  @Get()
+  async getUsers() {
+    const result = await this.userService.getAllUsers();
+
+    return result;
+  }
+
+  @Get(':id')
+  async getOneUser(@Param('id') id: string) {
+    const result = this.userService.getOneUserById(id);
 
     return result;
   }
