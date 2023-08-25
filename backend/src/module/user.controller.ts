@@ -1,4 +1,4 @@
-import { Controller, Post, Get, Body, Param } from '@nestjs/common';
+import { Controller, Post, Get, Patch, Body, Param } from '@nestjs/common';
 import { UserService } from './user.service';
 
 @Controller('users')
@@ -10,17 +10,13 @@ export class UserController {
     @Body('username') username: string,
     @Body('password') password: string,
     @Body('email') email: string,
-    @Body('fullname') fullname: string,
+    @Body('fullName') fullName: string,
   ) {
-    if (!username || !password || !email || !fullname)
+    if (!username || !password || !email || !fullName)
       return 'All fields are required';
 
-    const result = await this.userService.addNewUser(
-      username,
-      password,
-      email,
-      fullname,
-    );
+    const params = { username, password, email, fullName };
+    const result = await this.userService.addNewUser(params);
 
     return result;
   }
@@ -48,6 +44,21 @@ export class UserController {
   async getOneUser(@Param('id') id: string) {
     const params = { id };
     const result = this.userService.getOneUserByParams(params);
+
+    return result;
+  }
+
+  @Patch(':id')
+  async updateUser(
+    @Param('id') id: string,
+    @Body('username') username: string,
+    @Body('password') password: string,
+    @Body('fullName') fullName: string,
+    @Body('membership') membership: string,
+  ) {
+    const params = { id, username, password, fullName, membership };
+
+    const result = this.userService.updateUserDetails(params);
 
     return result;
   }

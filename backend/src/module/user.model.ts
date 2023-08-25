@@ -21,3 +21,12 @@ export interface User {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export interface UserParams {
+  _id: string;
+  username: string;
+  password: string;
+  email: string;
+  fullName: string;
+  membership: string;
+}
