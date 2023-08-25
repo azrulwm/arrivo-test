@@ -94,4 +94,14 @@ export class UserService {
       throw new NotFoundException('No User Found');
     }
   }
+
+  async deleteUserById(id: string) {
+    try {
+      await this.UserModel.findOneAndDelete({ _id: id });
+    } catch (error) {
+      throw new NotFoundException('User Not Found');
+    }
+
+    return 'User has been deleted';
+  }
 }
