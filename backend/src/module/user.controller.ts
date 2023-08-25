@@ -26,6 +26,18 @@ export class UserController {
   }
 
   @Get()
+  async getOneUserByParam(
+    @Body('id') id: string | null,
+    @Body('email') email: string | null,
+  ) {
+    const params = { id, email };
+    console.log(params);
+    const result = this.userService.getOneUserByParams(params);
+
+    return result;
+  }
+
+  @Get('all')
   async getUsers() {
     const result = await this.userService.getAllUsers();
 
@@ -34,7 +46,8 @@ export class UserController {
 
   @Get(':id')
   async getOneUser(@Param('id') id: string) {
-    const result = this.userService.getOneUserById(id);
+    const params = { id };
+    const result = this.userService.getOneUserByParams(params);
 
     return result;
   }

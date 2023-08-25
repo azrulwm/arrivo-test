@@ -13,7 +13,7 @@ export class UserService {
     password: string,
     email: string,
     fullName: string,
-  ) {
+  ): Promise<User> {
     const newUser = new this.UserModel({
       username,
       password,
@@ -25,7 +25,7 @@ export class UserService {
     return result;
   }
 
-  async getAllUsers() {
+  async getAllUsers(): Promise<User[]> {
     const result = await this.UserModel.find().lean().exec();
 
     if (!result) throw new NotFoundException('No User Found');
@@ -39,9 +39,16 @@ export class UserService {
     return updadatedResult;
   }
 
-  async getOneUserById(userId: string) {
+  async getOneUserByParams(params: Partial<User>) {
+    const { id, email } = params;
+    const updatedParams: any = {};
+
+    if (id) updatedParams._id = id;
+
+    if (email) updatedParams.email = email;
+
     try {
-      const { _id, ...otherProps } = await this.UserModel.findById(userId)
+      const { _id, ...otherProps } = await this.UserModel.findOne(updatedParams)
         .lean()
         .exec();
 
