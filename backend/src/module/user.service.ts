@@ -7,7 +7,6 @@ import {
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User, UserParams } from './user.model';
-import { after } from 'node:test';
 
 @Injectable()
 export class UserService {
@@ -87,7 +86,7 @@ export class UserService {
           lean: true,
           returnDocument: 'after',
         },
-      );
+      ).exec();
 
       return result;
     } catch (error) {
@@ -97,7 +96,7 @@ export class UserService {
 
   async deleteUserById(id: string) {
     try {
-      await this.UserModel.findOneAndDelete({ _id: id });
+      await this.UserModel.findOneAndDelete({ _id: id }).exec();
     } catch (error) {
       throw new NotFoundException('User Not Found');
     }
