@@ -15,3 +15,33 @@ export const PostSchema = new mongoose.Schema(
   },
   { timestamps: true },
 );
+
+enum PostStatus {
+  DRAFT = 'draft',
+  PUBLISHED = 'published',
+  PENDING_REVIEW = 'pending review',
+}
+
+enum PostLabel {
+  NORMAL = 'normal',
+  PREMIUM = 'premium',
+}
+
+export interface Post {
+  postId: number;
+  title: string;
+  body: string;
+  categoryId: number;
+  status: PostStatus;
+  label: PostLabel;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface CreatePostParam {
+  title: string;
+  body: string;
+  categoryId: number;
+  status: PostStatus;
+  label: PostLabel;
+}
