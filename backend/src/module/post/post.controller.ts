@@ -1,6 +1,14 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import { PostService } from './post.service';
-import { CreatePostParam } from './post.model';
+import { PostParam } from './post.model';
 
 @Controller('posts')
 export class PostController {
@@ -14,8 +22,22 @@ export class PostController {
   }
 
   @Post()
-  async createPost(@Body() params: CreatePostParam) {
+  async createPost(@Body() params: PostParam) {
     const result = await this.postService.createNewPost(params);
+
+    return result;
+  }
+
+  @Patch('/:id')
+  async updatePost(@Body() params: PostParam, @Param('id') postId: number) {
+    const result = await this.postService.updatePostById({ postId, ...params });
+
+    return result;
+  }
+
+  @Delete(':id')
+  async deletePost(@Param('id') postId: number) {
+    const result = await this.postService.deletePostById(postId);
 
     return result;
   }

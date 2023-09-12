@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { CreatePostParam, Post } from './post.model';
+import { PostParam, Post } from './post.model';
 
 @Injectable()
 export class PostService {
@@ -15,7 +15,7 @@ export class PostService {
     return result;
   }
 
-  async createNewPost(params: CreatePostParam): Promise<Post> {
+  async createNewPost(params: PostParam): Promise<Post> {
     const { title, body, categoryId, status, label } = params;
 
     try {
@@ -44,6 +44,43 @@ export class PostService {
       return result;
     } catch (error) {
       return error.message;
+    }
+  }
+
+  async updatePostById(params: PostParam): Promise<Post> {
+    const { postId, title, body, categoryId, status, label } = params;
+
+    const updatePost = { title, body, categoryId, status, label };
+
+    try {
+      const result = await this.PostModel.findOneAndUpdate(
+        {
+          postId,
+        },
+        updatePost,
+        {
+          lean: true,
+          returnDocument: 'after',
+        },
+      ).exec();
+
+      if (!result) throw new NotFoundException('No Posts Found');
+
+      return result;
+    } catch (error) {
+      return error;
+    }
+  }
+
+  async deletePostById(postId: number): Promise<string> {
+    try {
+      const result = await this.PostModel.findOneAndDelete({ postId }).exec();
+      if (!result)
+        throw new NotFoundException(`No Post with id ${postId} Found`);
+
+      return `Post with id ${postId} has been deleted`;
+    } catch (error) {
+      return error;
     }
   }
 }

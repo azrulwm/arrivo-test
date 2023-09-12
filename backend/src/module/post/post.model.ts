@@ -38,7 +38,8 @@ export interface Post {
   updatedAt: Date;
 }
 
-export interface CreatePostParam {
+export interface PostParam {
+  postId?: number;
   title: string;
   body: string;
   categoryId: number;
