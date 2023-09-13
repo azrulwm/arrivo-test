@@ -68,4 +68,16 @@ export class CategoryService {
       return error;
     }
   }
+
+  async deleteCategoryById(_id: string) {
+    try {
+      const result = await this.CategoryModel.findOneAndDelete({ _id });
+
+      if (!result) throw new NotFoundException('No Category Found');
+
+      return `Categories with the name "${result.name}" has been deleted`;
+    } catch (error) {
+      return error;
+    }
+  }
 }

@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Param, Patch } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Patch,
+  Delete,
+} from '@nestjs/common';
 import { CategoryService } from './category.service';
 import { Category } from './category.model';
 
@@ -26,6 +34,13 @@ export class CategoryController {
 
     const result =
       await this.categoryService.updateCategoriesById(updatedParams);
+
+    return result;
+  }
+
+  @Delete('/:id')
+  async deleteCategory(@Param('id') id: string) {
+    const result = await this.categoryService.deleteCategoryById(id);
 
     return result;
   }
