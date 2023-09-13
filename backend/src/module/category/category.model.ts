@@ -1,9 +1,9 @@
 import * as mongoose from 'mongoose';
 
-export const CatergorySchema = new mongoose.Schema(
+export const CategorySchema = new mongoose.Schema(
   {
     categoryId: { type: Number, required: true },
-    name: { type: String, required: true },
+    name: { type: String, required: true, unique: true },
     description: { type: String, required: true },
     activated: { type: Boolean, required: true },
   },

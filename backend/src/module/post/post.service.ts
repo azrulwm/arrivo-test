@@ -23,7 +23,7 @@ export class PostService {
       const latestPost = await this.PostModel.findOne()
         .sort({ postId: -1 })
         .limit(1);
-      let postId;
+      let postId = 0;
       if (!latestPost) {
         postId = 1; // If there are no posts yet, start with 1.
       } else {
