@@ -13,6 +13,7 @@ export const CategorySchema = new mongoose.Schema(
 );
 
 export interface Category {
+  _id: string;
   categoryId: number;
   name: string;
   description: string;

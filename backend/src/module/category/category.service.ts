@@ -50,4 +50,22 @@ export class CategoryService {
       return error.message;
     }
   }
+
+  async updateCategoriesById(params: Category) {
+    const { _id } = params;
+
+    try {
+      const result = await this.CategoryModel.findOneAndUpdate(
+        { _id },
+        { ...params },
+        { returnDocument: 'after', lean: true },
+      );
+
+      if (!result) throw new NotFoundException('No Categories Found');
+
+      return result;
+    } catch (error) {
+      return error;
+    }
+  }
 }
